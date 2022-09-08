@@ -4,14 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width initial-scale=1">
     <meta name="robots" CONTENT="noindex,nofollow">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
     <title>Alessandro Dal Maso</title>
     <base target="_blank">
     <style type="text/css">
-      body {font-family: "IBM Plex Sans", sans-serif; font-feature-settings: "ss02"; font-size:1em; max-width: 1024px;}
-      h1 {font-size: 1.6em}
+      @font-face {
+        font-family: 'CallunaSansRegular';
+        src: url('CallunaSansRegular-webfont.woff2') format('woff2'),
+             url('CallunaSansRegular-webfont.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+      }
+      body {font-family: "CallunaSansRegular", sans-serif; font-size:1em; max-width: 1024px;}
+      h1 {font-size: 1.6em; font-variant: small-caps}
       a {color: #00008B; text-decoration: none}
       a:hover {color: black; text-decoration: none}
       .border {border-top: 1pt solid black; border-bottom: 1pt solid black;}
