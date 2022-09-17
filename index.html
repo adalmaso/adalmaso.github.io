@@ -9,19 +9,30 @@
     <style type="text/css">
       @font-face {
         font-family: 'CallunaSansRegular';
+         /* A font by Jos Buivenga (exljbris) -> www.exljbris.com */
         src: url('CallunaSansRegular-webfont.woff2') format('woff2'),
              url('CallunaSansRegular-webfont.woff') format('woff');
         font-weight: normal;
         font-style: normal;
-      }
-      /* A font by Jos Buivenga (exljbris) -> www.exljbris.com */
+      }      
       body {font-family: "CallunaSansRegular", sans-serif; font-size:1em; max-width: 1024px;}
       h1 {font-size: 1em; font-weight: normal; padding-bottom: 0.5em;}
-      a {color: #00008B; text-decoration: none}
-      a:hover {color: black; text-decoration: none}
-      .border {border-top: 1pt solid black; border-bottom: 1pt solid black;}
-      .borderbottom {border-bottom: 1pt solid black;}
-      .bordertop {border-top: 1pt solid black}
+      @media (prefers-color-scheme: light) {
+        body {color: black; background-color: white}
+        a {color: #00008B; text-decoration: none}
+        a:hover {color: black; text-decoration: none}
+        .border {border-top: 1pt solid black; border-bottom: 1pt solid black}
+        .borderbottom {border-bottom: 1pt solid black}
+        .bordertop {border-top: 1pt solid black}
+      }
+      @media (prefers-color-scheme: dark) {
+        body {color: white; background-color: black}
+        a {color: #8B8B00; text-decoration: none}
+        a:hover {color: white; text-decoration: none}
+        .border {border-top: 1pt solid white; border-bottom: 1pt solid white;}
+        .borderbottom {border-bottom: 1pt solid white}
+        .bordertop {border-top: 1pt solid white}
+      }
       @media (min-width: 720px) {
         .scaleImg {max-width: 20vw; height: auto; width: auto\9; /* ie8 */}
         body {margin-left: 10%; margin-right:10%; margin-top: 5%; margin-bottom: 5%;}
