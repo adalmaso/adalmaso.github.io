@@ -1,0 +1,719 @@
+\documentclass[10pt]{article}
+\usepackage{fontawesome}
+
+\usepackage{fontspec}
+%\setromanfont[BoldFont=SourceSansPro-SemiBold.ttf,ItalicFont=SourceSansPro-Italic.ttf,BoldItalicFont=SourceSansPro-SemiBoldItalic.ttf,Scale=0.97,ItalicFeatures={StylisticSet={1}},UprightFeatures={StylisticSet={1,3}},BoldFeatures={StylisticSet={1,3}},Numbers=Proportional,Scale=0.95]{SourceSansPro-Regular.ttf}
+
+\setromanfont[BoldFont="Calluna Sans Semibold",
+ItalicFont="Calluna Sans Italic",
+BoldItalicFont="Calluna Sans Semibold Italic"]{CallunaSansRegular.otf}
+\newfontface\lightsc{"Calluna Sans Light"}[Letters=SmallCaps]
+
+% \setromanfont[BoldFont=CallunaSansSemiBold.otf,
+% ItalicFont=CallunaSansItalic.otf,
+% BoldItalicFont=CallunaSansSemiBoldItalic.otf]{CallunaSansRegular.otf}
+% \newfontface\lightsc{CallunaSansLight.otf}[Letters=SmallCaps]
+% \setmonofont[Scale=MatchLowercase]{inconsolatalgc.ttf}
+
+\usepackage{calc}
+\usepackage{microtype}
+\widowpenalty 500
+\clubpenalty 500
+\usepackage[shortcuts]{extdash}
+\usepackage[ddmmyyyy]{datetime}
+
+\usepackage{titlesec}
+\titleformat{\subsection}
+{\normalsize\mdseries\scshape}{}{}{}
+\titlespacing{\subsection} {0em}{0.75em}{0.75em}[]
+%\titleformat*{\subsection}{\normalsize\mdseries\scshape}
+%\titlespacing{\subsection}{0em}{1em}{0.1cm}[]
+
+\usepackage{graphicx} 
+
+\reversemarginpar
+\linespread{1.05}
+\usepackage[a4paper,
+            marginparwidth=1.1in,     % Length of section titles
+            marginparsep=.075in,       % Space between titles and text
+            margin=0.5in,               % 1 inch margins
+            tmargin=0.65in,
+            includemp]{geometry}
+
+\setlength{\parindent}{0in}
+
+
+\usepackage[shortlabels]{enumitem}
+
+\makeatletter
+\newlength{\bibhang}
+\setlength{\bibhang}{0em}
+\newlength{\bibsep}
+ {\@listi \global\bibsep\itemsep \global\advance\bibsep by\parsep}
+\newlist{bibsection}{itemize}{3}
+\setlist[bibsection]{label=,leftmargin=\bibhang,%
+        itemindent=-\bibhang,
+        itemsep=\bibsep,parsep=\z@,partopsep=0pt,
+        topsep=0pt}
+\newlist{bibenum}{enumerate}{3}
+\setlist[bibenum]{label=[\arabic*],resume,leftmargin={\bibhang+\widthof{[999]}},%
+        itemindent=-\bibhang,
+        itemsep=0.05in,parsep=\z@,partopsep=0pt,
+        topsep=0pt}
+\let\oldendbibenum\endbibenum
+\def\endbibenum{\oldendbibenum\vspace{-.6\baselineskip}}
+\let\oldendbibsection\endbibsection
+\def\endbibsection{\oldendbibsection\vspace{-.6\baselineskip}}
+\makeatother
+
+\usepackage{fancyhdr,lastpage}
+\pagestyle{fancy}
+%\pagestyle{empty}      % Uncomment this to get rid of page numbers
+\fancyhf{}\renewcommand{\headrulewidth}{0pt}
+\fancyfootoffset{\marginparsep+\marginparwidth}
+\setlength{\footskip}{20pt}
+\newlength{\footpageshift}
+\setlength{\footpageshift}
+          {0.5\textwidth+0.5\marginparsep+0.5\marginparwidth-2in}
+\lfoot{\hspace{\footpageshift}%
+       \parbox{4in}{\, \hfill %
+                    \arabic{page} of \protect\pageref*{LastPage} % +LP
+%                    \arabic{page}                               % -LP
+                    \hfill \,}}
+
+\usepackage{color,hyperref}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.3}
+\hypersetup{colorlinks,breaklinks,
+            linkcolor=darkblue,urlcolor=darkblue,
+            anchorcolor=darkblue,citecolor=darkblue}
+
+\renewcommand{\section}[1]{\pagebreak[3]%
+    \vspace{1.3\baselineskip}%
+    \phantomsection\addcontentsline{toc}{section}{#1}%
+    \noindent\llap{\scshape\smash{\parbox[t]{\marginparwidth}{\hyphenpenalty=10000\raggedright #1}}}%
+    \vspace{-\baselineskip}\par}
+
+\newcommand*\fixendlist[1]{%
+    \expandafter\let\csname preFixEndListend#1\expandafter\endcsname\csname end#1\endcsname
+    \expandafter\def\csname end#1\endcsname{\csname preFixEndListend#1\endcsname\vspace{-0.6\baselineskip}}}
+
+\let\originalItem\item
+\newcommand*\fixouterlist[1]{%
+    \expandafter\let\csname preFixOuterList#1\expandafter\endcsname\csname #1\endcsname
+    \expandafter\def\csname #1\endcsname{\let\oldItem\item\def\item{\pagebreak[2]\oldItem}\csname preFixOuterList#1\endcsname}
+    \expandafter\let\csname preFixOuterListend#1\expandafter\endcsname\csname end#1\endcsname
+    \expandafter\def\csname end#1\endcsname{\let\item\oldItem\csname preFixOuterListend#1\endcsname}}
+\newcommand*\fixinnerlist[1]{%
+    \expandafter\let\csname preFixInnerList#1\expandafter\endcsname\csname #1\endcsname
+    \expandafter\def\csname #1\endcsname{\let\oldItem\item\let\item\originalItem\csname preFixInnerList#1\endcsname}
+    \expandafter\let\csname preFixInnerListend#1\expandafter\endcsname\csname end#1\endcsname
+    \expandafter\def\csname end#1\endcsname{\csname preFixInnerListend#1\endcsname\let\item\oldItem}}
+
+\newlist{outerlist}{itemize}{3}
+    \setlist[outerlist]{label=\enskip\textbullet,leftmargin=*}
+    \fixendlist{outerlist}
+    \fixouterlist{outerlist}
+
+\newlist{lonelist}{itemize}{3}
+    \setlist[lonelist]{label=\enskip\textbullet,leftmargin=*,partopsep=0pt,topsep=0pt}
+    \fixendlist{lonelist}
+    \fixouterlist{lonelist}
+
+\newlist{innerlist}{itemize}{3}
+    \setlist[innerlist]{label=\enskip\textbullet,leftmargin=*,parsep=0pt,itemsep=0pt,topsep=0pt,partopsep=0pt}
+    \fixinnerlist{innerlist}
+
+\newlist{loneinnerlist}{itemize}{3}
+    \setlist[loneinnerlist]{label=\enskip\textbullet,leftmargin=*,parsep=0pt,itemsep=0pt,topsep=0pt,partopsep=0pt}
+    \fixendlist{loneinnerlist}
+    \fixinnerlist{loneinnerlist}
+
+\newcommand{\blankline}{\quad\pagebreak[3]}
+\newcommand{\halfblankline}{\quad\vspace{-0.5\baselineskip}\pagebreak[3]}
+
+\usepackage{doi}
+\usepackage{url}
+
+\urlstyle{same}
+\providecommand*\emaillink[1]{\nolinkurl{#1}}
+\providecommand*\email[1]{\href{mailto:#1}{\emaillink{#1}}}
+
+
+\begin{document}
+
+ {\hspace*{-\marginparsep minus \marginparwidth}%
+\begin{minipage}[t]{\textwidth+\marginparwidth+\marginparsep}%
+\flushleft
+{\large \lightsc{alessandro dal maso, md phd}}
+
+\vspace{0.5em}
+
+Medical Oncologist
+
+Medical Oncology 2, Veneto Institute of Oncology IOV -- IRCCS
+
+via Gattamelata 64, 35128 Padova, Italy
+
+\faEnvelopeO  \enskip \href{mailto:alessandro.dalmaso@iov.veneto.it}{alessandro.dalmaso@iov.veneto.it} \enskip\enskip
+%\faPhone \enskip +39 346 6979710
+
+\rule{\columnwidth}{1pt}
+\end{minipage}}
+ 
+\vspace{0.2cm}
+
+\vspace{0.2cm}
+
+\section{Professional experience}
+
+\textbf{Medical Oncologist}
+\hfill {since 2021}
+
+\href{http://www.ioveneto.it}{Medical Oncology 2, Veneto Institute of Oncology IOV -- IRCCS}
+\begin{innerlist}
+\item Clinical and research activity in thoracic oncology
+\item Co-investigator in several good clinical practice and spontaneous phase II and III clinical trials
+\item Member of the Thoracic Oncology Multidisciplinary Team
+\end{innerlist}
+
+\vspace{0.1cm}
+
+\textbf{Resident in Medical Oncology}
+\hfill {2015--2020}
+
+\href{http://www.discog.unipd.it}{Medical Oncology Residency Program, University of Padova}
+
+\href{http://www.discog.unipd.it}{Department of Surgery, Oncology and Gastroenterology, University of Padova}
+
+\href{http://www.ioveneto.it}{Medical Oncology 2, Veneto Institute of Oncology IOV -- IRCCS}
+\begin{innerlist}
+\item Clinical and research activity in thoracic oncology
+\enskip 2017--2020
+\item Co-investigator since 2017 in about 30 good clinical practice and spontaneous phase II and III clinical trials
+
+\item Other subspeciality training, including clinical and research activity in GI oncology, clinical activity in breast oncology and palliative care, clinical activity in oncohematology and internal medicine \enskip 2015--2017
+
+\end{innerlist}
+
+\section{Education}
+
+\textbf{Doctorate Degree in 
+Clinical and Experimental Oncology and Immunology}
+\hfill{2020--2023}
+
+\href{http://www.discog.unipd.it/doctorate/mission}{Clinical and Experimental Oncology and Immunology PhD School}
+
+
+\href{http://www.discog.unipd.it}{Department of Surgery, Oncology and Gastroenterology, University of Padova}
+
+Research project: ``The role of liver kinase B1 in small cell lung cancer, association with prognosis and tumor immune microenvironment features'', supervisor professor Valentina Guarneri
+
+\vspace{0.1cm}
+
+\textbf{Residency in Medical Oncology},
+\href{http://www.unipd.it}{University of Padova}
+\hfill{2015--2020}
+
+Graduated with honors with the thesis ``Tumor microenvironment characterization in small cell lung cancer: the role of aurora kinase and liver kinase B1'', supervisor professor Pierfranco Conte
+
+\vspace{0.1cm}
+
+\textbf{Medical Licensure},
+Italian medical board registration nr. VI 5994
+\hfill{2015}
+
+\vspace{0.1cm}
+
+\textbf{Medical Degree},
+\href{http://www.unipd.it}{University of Padova}
+\hfill {2008--2014}
+
+Graduated with honors with the thesis ``The role of \emph{LKB1} molecular alterations in non-small cell lung cancer: an exploratory study'', supervisor professor Pierfranco Conte
+
+\vspace{0.1cm}
+
+\textbf{High School Diploma, Classical Studies},
+\href{http://www.liceocorradini.edu.it}{Liceo Corradini, Thiene, Vicenza}, with honors
+\hfill {2003--2008}
+
+\section{Skills}
+
+\textbf{Medical skills }
+Clinical management of outpatients and inpatients with solid neoplasms;
+management of administration and toxicity of chemotherapy, immunotherapy and targeted therapy, with particular focus on thoracic neoplasms;
+management of oncological emergencies;
+palliative treatment of symptoms, including pain management;
+management of patients enrolled in clinical trials as per Good Clinical Practice (ICH GCP E6 R3 Certificate, 2025)
+
+\vspace{0.1cm}
+
+\textbf{Languages }
+Italian (native), English (proficient), French (basic)
+
+\vspace{0.1cm}
+
+\textbf{Computer skills }
+Office (Word, Excel, PowerPoint),
+Google Documents,
+statistical and data analysis software (R with Tidyverse, R Markdown, Quarto),
+photoediting (GIMP),
+vectorial image editing (Inkscape),
+page layout (\LaTeX, Overleaf, Scribus, Typst),
+web design (HTML, CSS)
+
+\vspace{0.1cm}
+
+\textbf{Soft skills }
+Excellent team working skills; focused on multidisciplinary and multiprofessional approach; excellent patient-physician relationship in inpatient, outpatient and telemedicine setting; excellent personal and team planning skills in clinical and research activity; ability to meet deadlines 
+
+\vspace{0.1cm}
+
+%\footnotesize
+
+\section{Publications}
+
+%\begin{multicols}{2}
+\vspace{-0.75em}
+\subsection{Full papers}
+
+\begin{innerlist}
+
+\item Scattolin D, Dingemans AMC, \textbf{Dal Maso A}, Guarneri V, Aerts JGJV, Pasello G, Dumoulin DW.
+Outcome and safety of lurbinectedin as compassionate use in extensive stage small cell lung cancer: A multicentric international cohort.
+\textit{Eur J Cancer} 2025, online ahead of print.
+
+\doi{10.1016/j.ejca.2025.115595}
+
+\item Pasello G, Pigato G, Scattolin D, Lando S, Potente S, Romualdi C, Roma A, Resi MV, Frega S, Ferro A, \textbf{Dal Maso A}, Bonanno L, Guarneri V, Lazzarini E, Indraccolo S.
+Baseline levels and dynamic changes of cfDNA, tumor fraction and mutations to anticipate the clinical course of small cell lung cancer (SCLC) patients treated with first-line atezolizumab and chemotherapy: an hypothesis generating study (CATS/ML43257).
+\textit{J Exp Clin Cancer Res} 2025, 44(1):178
+
+\doi{10.1186/s13046-025-03434-3}
+
+\item \textbf{Dal Maso A}, Ferrarini F, Esposito G, Minuzzo SA, Puggia AM, Pezzuto F, Zulato E, Bao LC, De Nuzzo M, Ferro A, Frega S, Pasello G, Calabrese F, Fassan M, Rea F, Guarneri V, Indraccolo S, Bonanno L.
+Liver kinase B1 expression is associated with improved prognosis and tumor immune microenvironment features in small cell lung cancer.
+\textit{Front Oncol} 2025, 15:1552506.
+
+\doi{10.3389/fonc.2025.1552506}
+
+\item Cappuzzo F, Ricciuti B, Delmonte A, Bonanno L, Wang X, Lye WK, Görtz A, Andrikou K, \textbf{Dal Maso A}, Minuti G, Papi M, Alessi JV, Di Federico A, Rodig S, Awad MM, Metro G, Attili I, Vitiello F, Pilotto S, Gori S, Rossi G, Buglioni S, Giannarelli D, Landi L.
+MAPK pathway activating alteration and immunotherapy efficacy in squamous cell lung carcinoma: results from the randomized, prospective SQUINT trial.
+\textit{Clin Cancer Res} 2025, 31(6):1027-1036
+
+\doi{10.1158/1078-0432.CCR-24-2077}
+
+\item Pasello G, Pavan A, De Nuzzo M, Frega S, Ferro A, \textbf{Dal Maso A}, Bonanno L, Guarneri V, Girardi F.
+Immune-related adverse events in patients treated with immunotherapy for locally advanced or metastatic NSCLC in real-world settings: a systematic review and meta-analysis.
+\textit{Front Oncol} 2024, 14:1415470
+
+\doi{10.3389/fonc.2024.1415470}
+
+\item  Pasello G, Lorenzi M, Scattolin D, Del Conte A, Cecere F, Pavan A, Macerelli M, Polo V, Pilotto S, Santarpia M, Cumerlato E, Da Ros V, Targato G, Bortolami A, Bonanno L, Ferro A, \textbf{Dal Maso A}, Frega S, Guarneri V. Osimertinib in Patients With Treatment-Naive EGFR-Mutant Non-small Cell Lung Cancer: Overall Survival, Post-progression Management and Budget Impact Analysis in Real-World.
+\textit{Oncologist} 2024, Mar 23:oyae043
+
+\doi{10.1093/oncolo/oyae043}
+
+\item Scattolin D, \textbf{Dal Maso A}, Ferro A, Frega S, Bonanno L, Guarneri V, Pasello G.
+The emerging role of Schlafen-11 (SLFN11) in predicting response to anticancer treatments: Focus on small cell lung cancer.
+\textit{Cancer Treat Rev} 2024, 128:102768
+
+\doi{10.1016/j.ctrv.2024.102768}
+%hfill{IF: 11.8}
+
+\item Pasello G, Lorenzi M, Scattolin D, Del Conte A, Cecere F, Pavan A, Macerelli M, Polo V, Pilotto S, Santarpia M, Cumerlato E, Da Ros V, Targato G, Bortolami A, Bonanno L, Ferro A, \textbf{Dal Maso A}, Frega S, Guarneri V. Osimertinib in Patients With Treatment-Naive EGFR-Mutant Non-small Cell Lung Cancer: Overall Survival, Post-progression Management and Budget Impact Analysis in Real-World
+\textit{Oncologist} 2024, 29(7):596-608
+
+\doi{10.1093/oncolo/oyae043}
+%hfill{IF: 5.8}
+
+
+\item Bonanno L, Calvetti L, \textbf{Dal Maso A}, Pavan A, Bao LC, De Nuzzo M, Frega S, Sartori G, Ferro A, Pasello G, Morandi P, Aprile G, Guarneri V.
+Real-world impact of the introduction of chemo-immunotherapy in extended small cell lung cancer: a multicentric analysis
+\textit{Front Immunol} 2024, 15:1353889
+
+\doi{10.3389/fimmu.2024.1353889}
+%hfill{IF: 8.786}
+
+\item Lorenzi M, Resi MV, Bonanno L, Frega S, \textbf{Dal Maso A}, Ferro A, Guarneri V, Pasello G.
+Tissue and circulating biomarkers of benefit to immunotherapy in extensive-stage small cell lung cancer patients
+\textit{Front Immunol} 2024, 15:1308109
+
+\doi{10.3389/fimmu.2024.1308109}
+%hfill{IF: 8.786}
+
+\item Riudavets M, Auclin E, Mosteiro M, Dempsey N, Majem M, Prelak A, López-Castro R, Bosch-Barrera J, Pilotto S, Escalera E, Tagliamento M, Mosquera J, Zalcman G, Nana FA, Ponce S, Albarrán-Artahona V, \textbf{Dal Maso A}, Spotti M, Mielgo X, Mussat E, Reyes R, Benítez JC, Lupinacci L, Duchemann B, De Giglio A, Blaquier JB, Audigier-Valette C, Scheffler M, Nadal E, Lopes G, Signorelli D, Garcia-Campelo R, Menis J, Bluthgen V, Campayo M, Recondo G, Besse B, Mezquita L, Planchard D.  
+Association Between Lung Immune Prognostic Index and Durvalumab Consolidation Outcomes in Patients With Locally Advanced Non-Small-Cell Lung Cancer
+\textit{Clin Lung Cancer} 2023, 25(3):233-243.e8
+
+\doi{10.1016/j.cllc.2023.11.007}
+%hfill{IF: 4.117}
+
+
+\item Bonanno L, Lorenzi M, Massa D, De Nuzzo M, Angerilli V, Zingone F, Barberio B, Russi A, Girardi F, Ferro A, \textbf{Dal Maso A}, Frega S, Pasello G, Dei Tos AP, Coppola M, Fassan M, Savarino EV, Guarneri V.
+Immune-Related Diarrhea and Colitis in Non-small Cell Lung Cancers: Impact of Multidisciplinary Management in a Real-World Setting.
+\textit{Oncologist} 2024, 29(1):e118-e130
+
+\doi{10.1093/oncolo/oyad238}
+%hfill{IF: 5.252}
+
+
+\item Proto C, Manglaviti S, Lo Russo G, Musca M, Galli G, Imbimbo M, Perrino M, Cordua N, Rulli E, Ballatore Z, \textbf{Dal Maso A}, Chella A, Sbrana A, Prelaj A, Ferrara R, Occhipinti M, Brambilla M, De Toma A, Mazzeo L, Beninato T, Signorelli D, Massa G, Greco FG, Calareso G, Miliziano D, Di Mauro RM, Mella G, Lucarelli A, Paggio A, Galli F, Torri V, De Braud FGM, Pasello G, Petrini I, Berardi R, Ganzinelli M, Garassino M, Zucali P.
+STYLE (NCT03449173) a phase II Trial of Sunitinib in patients with type B3 Thymoma or Thymic Carcinoma in second and further lines.
+\textit{J Thorac Oncol} 2023, 18(8):1070-1081
+
+\doi{10.1016/j.jtho.2023.04.009}
+%hfill{IF: 20.121}
+
+
+\item Ferro A, Sepulcri M, Schiavon M, Scagliori E, Mancin E, Lunardi F, Gennaro G, Frega S, \textbf{Dal Maso A}, Bonanno L, Paronetto C, Caumo F, Calabrese F, Rea F, Guarneri V, Pasello G.
+The Multidisciplinary Approach in Stage III Non-Small Cell
+Lung Cancer over Ten Years: From Radiation Therapy Optimisation to Innovative Systemic Treatments.
+\textit{Cancers} 2022, 14:5700
+
+\doi{10.3390/cancers14225700}
+%hfill{IF: 6.639}
+
+
+\item \textbf{Dal Maso A}, Del Bianco P, Cortiula F, Nardo G, Zulato E, Bonanno L, Follador A, De Maglio G, Pasello G, Indraccolo S. EGFR T790M testing through repeated liquid biopsy over time: a real-world multicentric retrospective experience. \textit{J Thorac Dis} 2022, 14(9):3364-3375
+
+\doi{10.21037/jtd-22-745}
+%hfill{IF: 3.007}
+
+
+\item Riudavets M, Auclin E, Mosteiro M, Dempsey N, Majem M, Lobefaro R, López-Castro R, Bosch-Barrera J, Pilotto S, Escalera E, Tagliamento M, Mosquera J, Zalcman G, Aboubakar-Nana F, Ponce S, \textbf{Dal Maso A}, Spotti M,  Mielgo-Rubio X, Mussat E, Reyes R, Benítez J, Lupinacci L, Duchemann B, De Giglio A, Blaquier J, Audigier-Valette C, Scheffler M, Nadal E, Lopes G, Signorelli D, Garcia-Campelo R, Menis J, Bluthgen V,  Campayo C, Recondo G, Besse B, Planchard D, Mezquita L. Durvalumab consolidation in patients with unresectable stage III non-small cell lung cancer with driver genomic alterations.
+\textit{Eur J Cancer} 2022, 167:142-148
+
+\doi{10.1016/j.ejca.2022.02.014}
+%hfill{IF: 9.162}
+
+
+\item Bonanno L, \textbf{Dal Maso A}, Pavan A, Zulato E, Calvetti L, Pasello G, Guarneri V, Conte PF, Indraccolo S. Liquid biopsy and non-small cell lung cancer: are we looking at the tip of the iceberg?
+\textit{Br J Cancer} 2022, 127(3):383-393
+
+\doi{10.1038/s41416-022-01777-8}
+%hfill{IF: 7.640}
+
+
+\item Lorenzi M, Ferro A, Cecere F, Scattolin D, Del Conte A, Follador A, Pilotto S, Polo V, Santarpia M, Chiari R, Pavan A, \textbf{Dal Maso A}, Da Ros V, Targato G, Vari S, Indraccolo S, Calabrese F, Frega S, Bonanno L, Conte PF, Guarneri V, Pasello G. First-Line Osimertinib in Patients with EGFR-Mutant Advanced Non-Small Cell Lung Cancer: Outcome and Safety in the Real World: FLOWER Study.
+\textit{Oncologist} 2022; 27(2):87–e115.
+
+\doi{10.1002/onco.13951}
+%hfill{IF: 5.252}
+
+
+\item \textbf{Dal Maso A}, Lorenzi M, Ferro A, Pilotto S, Cecere F, Follador A, Polo V, Del Conte A, Sartori G, Giavarra M, Scattolin D, Indraccolo S, Frega S, De Maglio G, Menis J, Bonanno L, Calabrese F, Guarneri V, Conte PF, Pasello G. Real-world data on treatment outcomes in EGFR-mutant non-small-cell lung cancer patients receiving osimertinib in second or further lines.
+\textit{Future Oncol} 2021, 17(19):2513-2527 
+
+\doi{10.2217/fon-2021-0356}
+%hfill{IF: 2.660}
+
+
+\item Pavan A, Boscolo Bragadin A, Calvetti L, Ferro A, Zulato E, Attili I, Nardo G, \textbf{Dal Maso A}, Frega S, Menin AG, Fassan M, Calabrese F, Pasello G, Aprile G, Conte PF, Rosell R, Indraccolo S, Bonanno L. Role of next generation sequencing-based liquid biopsy in advanced non-small cell lung cancer patients treated with immune checkpoint inhibitors: impact of STK11, KRAS and TP53 mutations and co-mutations on outcome. \textit{Transl Lung Cancer Res} 2021, 10(1):202-220.
+
+\doi{10.21037/tlcr-20-674}
+%hfill{IF: 5.132}
+
+\item Nardo G, Carlet J, Marra L, Bonanno L, Boscolo A, \textbf{Dal Maso A}, Boscolo Bragadin A, Indraccolo S, Zulato E. Detection of low-frequency KRAS mutations in cfDNA from EGFR-mutated NSCLC patients after first-line EGFR tyrosine kinase inhibitors. \textit{Front Oncol} 2021, 10:607840.
+
+\doi{10.3389/fonc.2020.607840}
+%hfill{IF: 4.848}
+
+\item Attili I, Bonanno L, Karachaliou N, Bracht JWP, Berenguer J, Codony-Servat C, Codony-Servat J, Aldeguer E, Gimenez-Capitan A, \textbf{Dal Maso A}, Fassan M, Chaib I, Molina-Vila MA, Passaro A, De Marinis F, Pasello G, Guarneri V, Conte PF, Rosell R. SRC and PIM1 as potential co-targets to overcome resitance in MET deregulated non-small cell lung cancer. \textit{Transl Lung Cancer Res} 2020, 9(5):1810-1821.
+
+\doi{10.21037/tlcr-20-681}
+%hfill{IF: 5.132}
+
+\item Frega S, \textbf{Dal Maso A}, Pasello G, Cuppari L, Bonanno L, Conte PF, Evangelista L. Novel
+Nuclear Medicine Imaging Applications in Immuno-Oncology. \textit{Cancers} 2020, 12(5):E1303.
+
+\doi{10.3390/cancers12051303}
+%hfill{IF: 6.162}
+
+\item \textbf{Dal Maso A}, Lorenzi M, Roca E, Pilotto S, Macerelli M, Polo V, Cecere FL, Del Conte A, Nardo G, Buoro V, Scattolin D, Monteverdi S, Urso L, Zulato E, Frega S, Bonanno L, Indraccolo S, Calabrese F, Conte P, Pasello G. Clinical Features and Progression Pattern of Acquired T790M-positive Compared With T790M-negative EGFR Mutant Non-small-cell Lung Cancer: Catching Tumor and Clinical Heterogeneity Over Time Through Liquid Biopsy. \textit{Clin Lung Cancer} 2020, 1:1--14.e3.
+
+\doi{10.1016/j.cllc.2019.07.009}
+%hfill{IF: 4.117}
+
+\item Frega S, \textbf{Dal Maso A}, Ferro A, Bonanno L, Conte P, Pasello G. Heterogeneous tumor features and treatment outcome between males and females with lung cancer (LC): Do gender and sex matter? \textit{Crit Rev Oncol Hematol} 2019, 138:87--103.
+
+\doi{10.1016/j.critrevonc.2019.03.012}
+%hfill{IF: 5.012}
+
+\item Pavan A, Calvetti L, \textbf{Dal Maso A}, Attili I, Del Bianco P, Pasello G, Guarneri V, Aprile G, Conte P, Bonanno L. Peripheral Blood Markers Identify Risk of Immune-Related Toxicity in Advanced Non-Small Cell Lung Cancer Treated with Immune-Checkpoint Inhibitors. \textit{Oncologist} 2019, 24(8):1128--1136.
+
+\doi{10.1634/theoncologist.2018-0563}
+%hfill{IF: 5.252}
+
+\item Cremolini C, Rossini D, Martinelli E, Pietrantonio F, Lonardi S, Noventa S, Tamburini E, Frassineti GL, Mosconi S, Nichetti F, Murgioni S, Troiani T, Borelli B, Zucchelli G, \textbf{Dal Maso A}, Sforza V, Masi G, Antoniotti C, Di Bartolomeo M, Miceli R, Ciardiello F, Falcone A. Trifluridine/Tipiracil (TAS-102) in Refractory Metastatic Colorectal Cancer: A Multicenter Register in the Frame of the Italian Compassionate Use Program. \textit{Oncologist} 2018, 23(10):1178--1187.
+
+\doi{10.1634/theoncologist.2017-0573}
+%hfill{IF: 5.252}
+
+\end{innerlist}
+
+
+\vspace{0.75em}
+\subsection{Abstracts and posters}
+\vspace{0.75em}
+\begin{innerlist}
+
+\item Scattolin D, Tosi A, Di Domenico B, \textbf{Dal Maso A}, Pezzuto F, Frega S, Ferro A, Mulargiu C, De Nuzzo M, Bao LC, Pante F, Sangiorgi S, Calabrese F, Bonanno L, Guarneri V, Rosato A, Pasello G.
+14P - SLFN11 detection in patients with small cell lung cancer treated with lurbinectedin: A retrospective translational analysis.
+\textit{Ann Oncol} 2024, 9 (Suppl 6) 103760
+
+\doi{10.1016/esmoop/esmoop103740} -- \textit{ESMO MAP 2024 Poster}
+
+\item Bonanno L, Bao LC, Padovan A, Ferro A, Bianco A, Calvetti L, Pavan A, Ziampiri S, Zulato E, Marinato GM, \textbf{Dal Maso A}, Frega S, Pasello G, Guarneri V, Indraccolo S.
+106P Longitudinal molecular characterization in plasma of EGFR mutant non-small cell lung cancer (NSCLC) experiencing early progression (EPD) on first-line osimertinib (Osi)
+\textit{Ann Oncol} 2024, 8 (Suppl 2), S256
+
+\doi{10.1016/j.annonc.2024.08.114} -- \textit{ESMO 2024 Poster}
+
+\item Bao LC, Pontoriero FM, Pascale D, Scalvenzi F, Mulargiu C, Ferro A, \textbf{Dal Maso A}, Frega S, Pasello G, Biondini D, Guarneri V, Tinè M, Bonanno L.
+1894P Pulmonary function test (PFT) and circulating biomarkers in immune-related pneumonitis (irP) in advanced non-small cell lung cancer (aNSCLC): A real-world multidisciplinary experience.
+\textit{Ann Oncol} 2024, 8 (Suppl 2), S1106
+
+\doi{10.1016/j.annonc.2024.08.1988} -- \textit{ESMO 2024 Poster}
+
+\item \textbf{Dal Maso A}, Ferrarini F, Esposito G, Pezzuto F, Zulato E, Bao LC, De Nuzzo M, Ferro A, Frega S, Pasello G, Calabrese F, Fassan M, Guarneri V, Indraccolo S, Bonanno L.
+206P Liver kinase B1 expression is associated with improved
+overall survival and decreased CD8+ tumor infiltrating
+lymphocytes in small cell lung cancer.
+\textit{ESMO Open} 2024, 9 (Suppl 3) 102779
+
+\doi{10.1016/j.esmoop.2024.102779}  -- \textit{ELCC 2024 Poster}
+
+\item Scattolin D, Urso L, Cavallari I, Ferro A, \textbf{Dal Maso A}, Frega S, Bonanno L, Guarneri V, Pasello G.
+164P Circulating cytokines levels as predictive biomarkers in
+pleural mesothelioma: Preliminary data from a prospective
+translational study.
+\textit{ESMO Open} 2024, 9 (Suppl 3) 102740
+
+\doi{10.1016/j.esmoop.2024.102740}  -- \textit{ELCC 2024 Poster}
+
+\item Bonanno L, Ferro A, Bao LC, Marinato GM, Padovan A, Zulato E, Frega S, \textbf{Dal Maso A}, Pasello G, Indraccolo S, Guarneri V.
+1331P Resistance mechanisms in EGFR-mutated advanced non-small cell lung cancer (aNSCLC) patients (pts) treated with first-line osimertinib (osi) and monitoring plasma mutational load: Preliminary results of REM study. 
+\textit{Ann Oncol} 2023, 34 (2 Supplement) S768
+
+\doi{10.1016/j.annonc.2023.09.2364}  -- \textit{ESMO 2023 Poster}
+
+\item Pasello G, Pigato G, Lorenzi M, Resi MV, Urso L, Giunco S, Ferro A, Dal Maso A, Frega S, Bonanno L, De Rossi A, Ciminale V, Indraccolo S, Guarneri V.
+2021 P Cell-free (cf) DNA as predictive biomarker (B) of treatment outcome in extensive small cell lung cancer (eSCLC) patients (pts) receiving atezolizumab, carboplatin and etoposide (ACE): CATS/ML43257 study.
+\textit{Ann Oncol} 2023, 34 (2 Supplement) S1074
+
+\doi{10.1016/j.annonc.2023.09.1252}  -- \textit{ESMO 2023 Poster}
+
+\item Pasello G, Urso L, Cavallari I, Lorenzi M, Resi MV, Giunco S, Pigato G, Sharova E, Ferro A, \textbf{Dal Maso A}, Frega S, Bonanno L, Indraccolo S, De Rossi A, D'Agostino DM, Ciminale V, Guarneri V.
+2020P Circulating micro RNAs (cmiRNAs) as treatment outcome predictors in extensive small cell lung cancer (eSCLC) patients (pts) receiving atezolizumab plus carboplatin and etoposide (ACE): CATS/ML43257 study.
+\textit{Ann Oncol} 2023, 34 (2 Supplement) S1073-S1074
+
+\doi{10.1016/j.annonc.2023.09.1251}  -- \textit{ESMO 2023 Poster}
+
+\item Cappuzzo F, Fusco F, Bonanno L, Landi L, Andrikou K, \textbf{Dal Maso A}, Minuti G, Papi M, Metro G, Lye WK, Ariyaratne P, Yu Y, Lau WM, Wang X, Lucke J, Görtz A, Attili I, Piantedosi F, Pilotto S, Gori S, Rossi G, Buglioni S, Giannarelli D, Delmonte A. 
+P2.05-02 MAPK1/MAPK3 Mutations Enhance Immunotherapy Efficacy in Lung Squamous Cell Carcinoma (LSCC): Results of the SQUINT Trial.
+\textit{J Thorac Oncol} 2023, 18 (11 Supplement) S307
+
+\doi{10.1016/j.jtho.2023.09.528}  -- \textit{WCLC 2023 Poster}
+
+\item Bonanno L, Zulato E, Del Bianco P, Boscolo Bragadin A, Attili I, Pavan A, Nardo G, \textbf{Dal Maso A}, Frega S, Ferro A, Pasello G, Fassan M, Calabrese F, Guarneri V, Indraccolo S. 
+P1.23-06 Liquid Biopsy Predicts Differential Benefit from First Line Pembrolizumab in Advanced Non-small Cell Lung Cancer.
+\textit{J Thorac Oncol} 2023, 18 (11 Supplement) S257
+
+\doi{10.1016/j.jtho.2023.09.434}  -- \textit{WCLC 2023 Poster}
+
+\item De Ruvo M, Barberio B, Zingone F, Bonanno L, Dal Maso A, Frega S, Chiaron Sileni V, Savarino EV.
+P566 Colitis due to immunotherapy with anti-PD-1: a case series.
+\textit{J Crohn Colitis} 2023, 17 (1 Supplement) i695-i696
+
+\doi{10.1093/ecco-jcc/jjac190.0696}  -- \textit{ECCO 2023 Poster}
+
+\item Pasello G, Lorenzi M, Tosi A, Roma A, Pavan A, Scapinello A, Lonardi S, Ferro A, \textbf{Dal Maso A}, Frega S, Bonanno L, Del Bianco P, Guarneri V, Rosato A.
+164P Immune cells distribution and spatial relationship within microenvironment as predictive biomarkers of benefit in extended stage small cell lung cancer patients receiving atezolizumab plus carboplatin and etoposide as first-line treatment.
+\textit{J Thorac Oncol} 2023, 18 (4 Supplement) S130
+
+\doi{10.1016/S1556-0864(23)00418-5}  -- \textit{ELCC 2023 Poster}
+
+\item Lorenzi M, Tosi A, Crivellaro G, Frega S, \textbf{Dal Maso A}, Bonanno L, Rosato A, Guarneri V, Pasello G. 19P Gene expression profile (GEP) of extensive small-cell lung cancer (eSCLC) patients (pts) receiving first-line platinum- etoposide plus atezolizumab (PEA)
+\textit{Ann Oncol} 2022, 33 (7 suppl) S552
+
+\doi{10.1016/j.annonc.2022.07.047} -- \textit{ESMO 2022 Poster}
+
+\item Bonanno L, Zulato E, Del Bianco P, Boscolo Bragadin A, Attili I, Pavan A, Nardo G, \textbf {Dal Maso A}, Ferro A, Frega S, Pasello G, Fassan M, Calabrese F, Guarneri V, Indraccolo S. 129P Association of clinico-pathological markers with longitudinal liquid biopsy (LB) results predicts outcome in advanced non-small cell lung cancer (aNSCLC) patients (pts) treated with immune checkpoint inhibitors (ICIs)
+\textit{Ann Oncol} 2022, 33 (7 suppl) S596
+
+\doi{10.1016/j.annonc.2022.07.161} -- \textit{ESMO 2022 Poster}
+
+\item Ferro A, Girardi F, Pretelli G, Mulargiu C, Resi MV, Benetti B, Marinato GM, Lorenzi M, \textbf {Dal Maso A}, Frega S, Pasello G, Guarneri V, Bonanno L. 1584P
+Immune-related adverse events (irAEs) in advanced non-small cell lung cancer (aNSCLC) in a real-world analysis: A risk prediction nomogram.
+\textit{Ann Oncol} 2022, 33 (7 suppl) S1269
+
+\doi{10.1016/j.annonc.2022.07.1677} -- \textit{ESMO 2022 Poster}
+
+
+\item Proto C, Galli G, Mangiaviti S, Lo Russo G, Ganzinelli M, Galli F, Musca M, Rulli E, Di Mauro R, Mella G, Lucarelli A, Paggio A, Valeggi S, Ballatore Z, \textbf{Dal Maso A}, Perrino M, Chella A, Sbrana A, Prelaj A, Ferrara R, Occhipinti M, Brambilla M, De Toma A, Mazzeo L, Beninato T, Pircher C, De Braud F, Pasello G, Petrini I, Berardi R, Garassino M, Zucali P. MA10.07 Phase II Trial of Sunitinib in Patients with Type B3 Thymoma or Thymic Carcinoma in Second and Further Lines - STYLE Trial. 
+\textit{J Thorac Oncol} 2022, 17 (9S) S79
+
+\doi{10.1016/j.jtho.2022.07.134} -- \textit{WCLC 2022 Poster}
+
+
+\item Lorenzi M, Massa D, Angerilli V, Barberio B, De Ruvo M, Pretelli G, Benetti C, Mulargiu C, Resi MV, Ferro A, \textbf{Dal Maso A}, Ferro A, Pasello G, Guarneri V, Savarino EV, Fassan M, Bonanno L. P1.15-06 Immune-Checkpoint Inhibitors-Related Colitis in Advanced Non-small
+Cell Lung Cancer Patients: A Real-World Analysis.
+\textit{J Thorac Oncol} 2022, 17 (9S) S121
+
+\doi{0.1016/j.jtho.2022.07.202} -- \textit{WCLC 2022 Poster}
+
+\item Lorenzi M, Scattolin D, Del Conte A, Sangiorgi S, Polo V, Pavan A, Pilotto S, Santarpia M, Da Ros V, \textbf{Dal Maso A}, Ferro A, Frega S, Bortolami A, Bonanno L, Indraccolo S, Guarneri V, Pasello G. EP08.02-104 Osimertinib in Untreated EGFR-Mutant Non-small Cell Lung
+Cancers: Overall Survival and Budget Impact Analysis in Real-World.
+\textit{J Thorac Oncol} 2022, 17 (9S) S450
+
+\doi{10.1016/j.jtho.2022.07.787} -- \textit{WCLC 2022 Poster}
+
+\item Benetti B, Ferro A, Girardi F, Calvetti L, Pavan A, Mulargiu C, Simionato F, Pretelli G, Lorenzi M, Resi MV, Marinato G, \textbf{Dal Maso A}, Frega S, Pasello G, Aprile G, Morandi P, Guarneri V, Bonanno L. EP08.01-012 First-line Chemo-Immunotherapy in Advanced Non-Small Cell Lung Cancer with 0-49\% PD-L1: A Real-world Experience.
+\textit{J Thorac Oncol} 2022, 17 (9S) S341
+
+\doi{10.1016/j.jtho.2022.07.584} -- \textit{WCLC 2022 Poster}
+
+\item Delmonte A, Bonanno L, Landi L, Andrikou K, \textbf{Dal Maso A}, Minuti G, Papi M, Metro G, Attili I, Piantedosi F, Pilotto S, Gori S, Rossi G, Buglioni S, Giannarelli D, Cappuzzo F. EP08.01-030 Nivolumab+Ipilimumab Vs Platinum-Based CT+Nivolumab In
+Advanced Lung Squamous-Cell Carcinoma: The Randomized SQUINT Trial.
+\textit{J Thorac Oncol} 2022, 17 (9S) S351
+
+\doi{10.1016/j.jtho.2022.07.602} -- \textit{WCLC 2022 Poster}
+
+\item  Ferro A, Sepulcri M, Schiavon M, Scagliori E, Gennaro G, Costa M, Bonanno L, Frega S, \textbf{Dal Maso A}, Calabrese F, Rea F, Caumo F, Guarneri V, Pasello G.  119P Evolution of the management of stage III non-small cell lung cancer (NSCLC): A single-center real-world scenario over 10 years. 
+\textit{Ann Oncol} 2022, 33 (suppl\_2) S87
+
+\doi{10.1016/j.annonc.2022.02.146}  -- \textit{ELCC 2022 Poster}
+
+\item Pretelli G, Pavan A, \textbf{Dal Maso A}, Resi MV, Mulargiu C, Ferro A, Benetti B, Lorenzi M, Marinato GM, Frega S, Pasello G, Conte PF, Guarneri V, Bonanno L.  40P Immune-related adverse events (irAEs) in advanced non-small cell lung cancer (aNSCLC) patients (pts): A real-world analysis. 
+\textit{Ann Oncol} 2022, 33 (suppl\_2) S51
+
+\doi{10.1016/j.annonc.2022.02.049}  -- \textit{ELCC 2022 Poster}
+
+\item Pretelli G, Pavan A, \textbf{Dal Maso A}, Resi MV, Mulargiu C, Ferro A, Benetti B, Lorenzi M, Marinato GM, Frega S, Pasello G, Conte PF, Guarneri V, Bonanno L.  63P Immune-related adverse events (irAEs) in advanced non-small cell lung cancer (aNSCLC) patients (pts): Neutrophil to lymphocyte ratio (NLR) and the risk for toxicity recurrence
+\textit{Ann Oncol} 2022, 33 (suppl\_2) S61
+
+\doi{10.1016/j.annonc.2022.02.072}  -- \textit{ELCC 2022 Poster}
+
+\item Riudavets M, Auclin E, Aboubakar F, Ponce Aix S, \textbf{Dal Maso A}, Bluthgen V, Mielgo X, Mussat E, Reyes R, Benítez J, Lupinacci L, Duchemann B, de Giglio A, Bautista J, Audigier-Valette C, Scheffler M, Campayo M, Besse B, Planchard D, Mezquita L.  25P Association between the lung immune prognostic index (LIPI) and durvalumab consolidation outcomes in patients with locally advanced non-small cell lung cancer (NSCLC)
+\textit{Ann Oncol} 2021, 32 (suppl\_7) S1384
+
+\doi{10.1016/j.annonc.2021.10.041}  -- \textit{ESMO Immuno-Medical Oncology 2021 Poster}
+
+\item \textbf{Dal Maso A}, Pavan A, Ferro A, Pretelli G, Frega S, Menis J, Pasello G, Guarneri V, Conte PF, Bonanno L. 119P The role of circulating markers in predicting immune-related adverse events (irAEs) and their recurrence in advanced Non-small cell lung cancer (aNSCLC) patients (pts).
+\textit{J Thorac Oncol} 2021, 16 (suppl\_4) S763
+
+\doi{10.1016/S1556-0864(21)01961-4}  -- \textit{ELCC 2021 Poster}
+
+
+\item Bonanno L, \textbf{Dal Maso A}, Pavan A, Zulato E, Esposito G, Fassan M, Nardo G, Pasello G, Guarneri V, Calabrese F, Rea F, Indraccolo S, Conte PF. 51P Liver kinase B1 (LKB1) and phosphorylated AMP kinase (AMPK) expression in small cell lung cancer (SCLC): association with prognosis and tumor immune microenvironment (TIME) features. \textit{J Thorac Oncol} 2021, 16 (suppl\_4) S723-S724
+
+\doi{10.1016/S1556-0864(21)01893-1} -- \textit{ELCC 2021 Poster}
+
+\item Lorenzi M, \textbf{Dal Maso A}, Ferro A, Polo V, Scattolin D, Macerelli M, Follador A, Targato G, Indraccolo S, Frega S, Menis J, Bonanno L, Guarneri V, Conte PF, Pasello G. 149P First line (1L) osimertinib in EGFR mutant (mut) advanced non-small-cell lung cancer (aNSCLC) patients (pts): progression (PD) pattern and safety in the real-world (RW). \textit{J Thorac Oncol} 2021, 16 (suppl\_4) S779
+
+\doi{10.1016/S1556-0864(21)01991-2} -- \textit{ELCC 2021 Poster}
+
+\item \textbf{Dal Maso A}, Ferro A, Lorenzi M, Polo V, Scattolin D, Del Conte A, Scoccia E, Frega S, Bonanno L, Indraccolo S, Calabrese F, Guarneri V, Conte PF, Pasello G. 1398P Real-life progression (PD) pattern of EGFR mutant advanced non-small cell lung cancer (aNSCLC) patients (pts) receiving systemic therapy after first or second generation tyrosine kinase inhibitor (1-2 gen TKI). \textit{Ann Oncol} 2020, 31(suppl\_4):S886
+
+\doi{10.1016/j.annonc.2020.08.1712} -- \textit{ESMO 2020 Poster}
+
+\item Pavan A, Zulato E, Calvetti L, Ferro A, Nardo G, Boscolo A, Attili I, Frega S, \textbf{Dal Maso A}, Pasello G, Guarneri V, Aprile G, Conte PF, Indraccolo S, Bonanno L. Plasma next-generation sequencing (NGS) in advanced non-small cell lung cancer (aNSCLC) patients (pts) treated with immune checkpoint inhibitors (ICIs): Impact of STK11 and TP53 mutations on outcome. \textit{J Clin Oncol} 2020, 38(suppl; abstr 3046). 
+
+\doi{10.1200/JCO.2020.38.15\_suppl.3046}  -- \textit{ASCO 2020 Abstract}
+
+\item Pavan A, Calvetti L, \textbf{Dal Maso A}, Fabozzi A, Piccin L, Chiarion-Sileni V, Pasello G, Aprile G, Guarneri V, Conte PF, Bonanno L. 144P Circulating biomarkers and risk of immune-related adverse events (irAEs) in patients (pts) with advanced non-small cell lung cancer (aNSCLC) and metastatic melanoma (mMel). \textit{Ann Oncol} 2019, 30 (suppl\_5).
+\doi{10.1093/annonc/mdz239.054} -- \textit{ESMO 2019 Poster}
+
+\item Pavan A, \textbf{Dal Maso A}, Pasello G, Guarneri V, Conte P, Bonanno L. D30 Body mass index (BMI) and advanced non-small cell lung cancer patients (ANSCLC): what is its role in the immunotherapy era? A monocentric experience. \textit{Tumori Journal} 2019, 105(6S):1–216.  \doi{10.1177/0300891619872589} -- \textit{AIOM 2019 Poster}
+
+\item Pasello G, \textbf{Dal Maso A}, Lorenzi M, Roca E, Pilotto S, Macerelli M, Polo V, Del Conte A, Nardo G, Buoro V, Scattolin D, Monteverdi S, Urso L, Zulato E, Frega S, Bonanno L, Indraccolo S, Calabrese F, Conte P. Clinical features and progression pattern of T790M+ compared with T790M- EGFR mutant NSCLC. \textit{J Clin Oncol} 2019, 37(suppl; abstr e20612).  \doi{10.1200/JCO.2019.37.15\_suppl.e20612} -- \textit{ASCO 2019 Abstract}
+
+\item Pavan A, Calvetti L, \textbf{Dal Maso A}, Attili I, Pasello G, Aprile G, Guarneri V, Conte P, Bonanno L. 138P Immune-related adverse events (irAEs) in advanced non-small cell lung cancer (aNSCLC): Platelet-to-lymphocyte ratio (PLR) predicts the risk of development and relapse. \textit{Ann Oncol} 2019, 30(suppl\_2):ii38-ii68.
+
+\doi{10.1093/annonc/mdz063.056} -- \textit{ELCC 2019 Poster}
+
+\item Pavan A, Attili I, Frega S, \textbf{Dal Maso A}, Ferro A, Boscolo A, Zago G, Pasello G, Menis J, Guarneri V, Bonanno L, Conte P. D13 5 years into the immune-therapy era for advanced stage non-small cell lung cancer (aNSCLC): neutrophil-to-lymphocyte ratio (NLR) as a predictive marker for efficacy and for development of immune-related adverse events (irAEs). \textit{Tumori Journal} 2018, 104(4S):6–224.
+
+\doi{10.1177/0300891618796945} -- \textit{AIOM 2018 Poster}
+
+\item Attili I, Pavan A, \textbf{Dal Maso A}, Ferro A, Frega S, Zago G, Menis J, Bonanno L, Guarneri V, Pasello G, Conte P.  D41 Impact of DNLR on treatment outcome in NSCLC patients receiving salvage chemotherapy after PD-1/PD-L1 Inhibitors. \textit{Tumori Journal} 2018, 104(4S):6–224.
+
+ \doi{10.1177/0300891618796945} -- \textit{AIOM 2018 Poster}
+
+\end{innerlist}
+
+\subsection{Invited talks}
+
+\begin{innerlist}
+
+\item \textbf{Dal Maso A}. Case study. Innovazione nel trattamento dell’NSCLC. Webinar, 16 October 2024.
+
+\item \textbf{Dal Maso A}. Case study. exCHANGE 2.0. Trasformare la pratica clinica del NSCLC attraverso lo scambio di esperienze. Padova, 04 October 2024.
+
+\item \textbf{Dal Maso A}, Bearz A, Macerelli M. Case study. exCHANGE 2.0. Trasformare la pratica clinica del NSCLC attraverso lo scambio di esperienze. Padova, 04 October 2024.
+
+\item \textbf{Dal Maso A}. Controversies in EGFR mutant NSCLC: first line monotherapy. NSCLC metastatico oncogene-addicted: Paradigma di trattamento in continua evoluzione. Incontri Oncologici del Triveneto. Padova, 04 July 2024.
+
+\item \textbf{Dal Maso A}, Sepulcri M. PCI and CNS metastases in SCLC. Next steps in SCLC. Soave, Verona, 25 June 2024.
+
+\item \textbf{Dal Maso A}. Tutor at ``Observational studies, regulatory aspects and study design'', IOV internal meeting. Padova, 17 June 2024.
+
+\item \textbf{Dal Maso A}. Case study. BRAF and MET mutations in NSCLC. Treviso, 20 May 2024.
+
+\item \textbf{Dal Maso A}. Tutor at ``Observational studies, regulatory aspects and study design'', IOV internal meeting. Padova, 18 March 2024.
+
+\item \textbf{Dal Maso A}, Sepulcri M. Case study. Sharing experience in NSCLC: multidisciplinary discussion. Milano, 17 February 2024.
+
+\item \textbf{Dal Maso A}, Scattolin D, Cavallari I. Lung cancer overview. Lecture at General Pathology and Patophysiology Course (professor Vincenzo Ciminale, professor Andrea Rasola), Medicine and Surgery Degree Course, School of Medicine and Surgery, University of Padova. Padova, 19 December 2023.
+
+\item \textbf{Dal Maso A}. Clinical case presentations, focus on SCLC. Lung Clinical Observation Program 2023. Padova, 09 November 2023.
+
+\item \textbf{Dal Maso A}. Clinical research in thoracic neoplasms: ongoing Veneto Oncology Network studies. Dolomiti Lung Cancer 2022. Webinar, 27 May 2022.
+
+\item \textbf{Dal Maso A}. Updates on target therapy. Dolomiti Lung Cancer 2022. Webinar, 27 May 2022.
+
+\item \textbf{Dal Maso A}. Nardo G. Case Study. Diagnostic Best Practice 2019, Focus on EGFR Liquid Biopsy. Padova, 15 March 2019.
+
+\end{innerlist}
+
+%\end{multicols}
+
+
+\section{Scientific societies}
+\begin{innerlist}
+\item European Society of Medical Oncology (ESMO) member since January 2020
+\item Associazione Italiana di Oncologia Medica (AIOM) member since July 2020
+\end{innerlist}
+
+\vspace{1.5 em}
+
+ {\hspace*{-\marginparsep minus \marginparwidth}%
+\begin{minipage}[t]{\textwidth+\marginparwidth+\marginparsep}%
+\footnotesize I authorize the treatment of my personal data according to the EU Regulation 2016/679 and to Italian Law Decree 196/2003.
+ %I consent to the processing of the personal data in my curriculum vitae according to art. 13 of Italian Law Decree 196/2003 and art. 13 of EU Regulation 2016/679 (GDPR).
+%Dichiaro di essere informato ai sensi del Dlgs 196 del 30 giugno 2003 e dell’art. 13 GDPR (Regolamento UE 2016/679), che il presente curriculum verrà pubblicato nell'area dedicata all'amministrazione trasparente del sito dell'Istituto Oncologico Veneto e nel sito ECM della Regione Veneto e a tal fine presto il consenso  al trattamento dei dati personali ivi contenuti.
+
+%Il sottoscritto ai sensi e per gli effetti degli articoli 46 e 47 e consapevole delle sanzioni penali previste dall’articolo 76 del D.P.R. 28 dicembre 2000, n. 445 nelle ipotesi di falsità in atti e dichiarazioni mendaci, dichiara che le informazioni riportate nel presente curriculum vitae, redatto in formato europeo, corrispondono a verità.
+\end{minipage}}
+ 
+% \vspace{0.2cm}
+
+% \vfill
+% \vspace{1.5 em}
+% {\hspace*{-\marginparsep minus \marginparwidth}%
+% \begin{minipage}[t]{\textwidth+\marginparwidth+\marginparsep}%
+% \footnotesize \texttt{Last update \today}
+
+% \vspace{0.5em}
+
+% \texttt{CV available at: \url{https://adalmaso.github.io/cv_en.pdf}}
+
+% \vspace{0.5em}
+
+% \qrcode{https://adalmaso.github.io/cv_en.pdf}
+% \end{minipage}}
+% \halfblankline
+
+\end{document}
+
+https://it.overleaf.com/project/60a0e23419a1c46482ae5165
